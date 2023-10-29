@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "508461077238",
+    "project_id": "business-essential",
+    "storage_bucket": "business-essential.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508461077238:android:6d6905418757b0b3fe92d7",
+        "android_client_info": {
+          "package_name": "com.example.business_essential"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtyQ3o3hF76zSuxPSXt9AmHm95kBFxSCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
