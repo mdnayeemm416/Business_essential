@@ -1,45 +1,37 @@
-import 'package:business_essential/Home/dashboard.dart';
-import 'package:business_essential/Home/pending.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddItem extends StatefulWidget {
-  const AddItem({super.key});
+class Addwithdraw extends StatefulWidget {
+  const Addwithdraw({super.key});
 
   @override
-  State<AddItem> createState() => _AddItemState();
+  State<Addwithdraw> createState() => _AddwithdrawState();
 }
 
-class _AddItemState extends State<AddItem> {
+class _AddwithdrawState extends State<Addwithdraw> {
   final TextEditingController titlecontroller = TextEditingController();
-  final TextEditingController descriptioncontroller = TextEditingController();
   final TextEditingController pricecontroller = TextEditingController();
 
   Addtask() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String time = DateTime.now().toString();
-    FirebaseFirestore.instance.collection("Pending product").doc(time).set({
-      "name": titlecontroller.text,
-      "Address": descriptioncontroller.text,
-      "price": pricecontroller.text
-    });
+    FirebaseFirestore.instance
+        .collection("withdraw")
+        .doc(time)
+        .set({"reason": titlecontroller.text, "amount": pricecontroller.text});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Withdraw Amount")),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: Image.network(
-                "https://cdn2.iconfinder.com/data/icons/hand-drawn-10/135/132-1024.png",
-                height: Get.height * .3,
-                fit: BoxFit.cover,
-              ),
+            const SizedBox(
+              height: 100,
             ),
             Container(
               padding: const EdgeInsets.only(left: 20, right: 20),
@@ -50,9 +42,9 @@ class _AddItemState extends State<AddItem> {
                   controller: titlecontroller,
                   cursorColor: const Color.fromARGB(255, 230, 230, 250),
                   decoration: InputDecoration(
-                      label: const Text("Customer Name"),
+                      label: const Text("Withdraw Reason"),
                       labelStyle: const TextStyle(color: Colors.black),
-                      hintText: "Customer Name",
+                      hintText: "Withdraw Reason",
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide:
@@ -67,33 +59,12 @@ class _AddItemState extends State<AddItem> {
                   height: 20,
                 ),
                 TextField(
-                  controller: descriptioncontroller,
-                  maxLines: 3,
-                  cursorColor: const Color.fromARGB(255, 230, 230, 250),
-                  decoration: InputDecoration(
-                      label: const Text("Customer Address"),
-                      labelStyle: const TextStyle(color: Colors.black),
-                      hintText: "Customer Address",
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide:
-                            BorderSide(color: Theme.of(context).primaryColor),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                          borderRadius: BorderRadius.circular(20))),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
                   controller: pricecontroller,
                   cursorColor: const Color.fromARGB(255, 230, 230, 250),
                   decoration: InputDecoration(
-                      label: const Text("Price"),
+                      label: const Text("Amount"),
                       labelStyle: const TextStyle(color: Colors.black),
-                      hintText: "Price",
+                      hintText: "Amount",
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),
                         borderSide:
@@ -113,10 +84,10 @@ class _AddItemState extends State<AddItem> {
                     child: ElevatedButton(
                       onPressed: () {
                         Addtask();
-                        Get.snackbar("Successful", "Your product added");
-                        Get.toNamed("/");
+                        Get.snackbar("Successful", "Withdraw Done");
+                        Get.toNamed("/withdraw");
                       },
-                      child: const Text("Add"),
+                      child: Text("Add"),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),

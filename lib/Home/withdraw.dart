@@ -1,30 +1,35 @@
+import 'package:business_essential/Home/withdrawForm.dart';
 import 'package:business_essential/getx_function/getxcontroller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-class Completed extends StatefulWidget {
-  const Completed({super.key});
+class withdraw extends StatefulWidget {
+  const withdraw({super.key});
 
   @override
-  State<Completed> createState() => _CompletedState();
+  State<withdraw> createState() => _withdrawState();
 }
 
-class _CompletedState extends State<Completed> {
+class _withdrawState extends State<withdraw> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(const Addwithdraw());
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
-        title: const Center(child: Text("Completed Item")),
-        elevation: 4,
+        title: const Text("Withdraw"),
       ),
       body: Column(children: [
         Expanded(
           child: StreamBuilder(
               stream:
-                  FirebaseFirestore.instance.collection("Complete").snapshots(),
+                  FirebaseFirestore.instance.collection("withdraw").snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -65,16 +70,18 @@ class _CompletedState extends State<Completed> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(doc[index]["name"]),
-                                  Expanded(
-                                      child: Container(
-                                          width: Get.width * .6,
-                                          child: Text(doc[index]["Address"]))),
-                                  Text(doc[index]["price"] + " " + "BDT")
+                                  Text(
+                                    doc[index]["reason"],
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(doc[index]["amount"] + " " + "BDT")
                                 ],
                               ),
-                              Image.network(
-                                "https://cdn4.iconfinder.com/data/icons/basicolor-arrows-checks/24/ok_check_done-512.png",
+                              Image.asset(
+                                "assets/withdraw.png",
                                 height: 50,
                               )
                             ],

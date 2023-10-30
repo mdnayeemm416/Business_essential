@@ -1,4 +1,6 @@
 import 'package:business_essential/Home/optioned.dart';
+import 'package:business_essential/getx_function/getxcontroller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,11 +12,50 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final MainBalaceController mainBalaceController =
+      Get.put(MainBalaceController());
+
+  void initState() {
+    super.initState();
+    // Fetch data, call resetmainBalance, and AddMainBalanceTotal here if needed
+    fetchmainbalance();
+    fetchcurrenbalance();
+  }
+
+  // Define a function to fetch data and process it
+  void fetchmainbalance() {
+    FirebaseFirestore.instance
+        .collection("Complete")
+        .snapshots()
+        .listen((snapshot) {
+      // Process the data, call resetmainBalance, and AddMainBalanceTotal here
+      mainBalaceController.resetmainBalance();
+      snapshot.docs.forEach((doc) {
+        mainBalaceController.AddMainBalanceTotal(double.parse(doc["price"]));
+      });
+    });
+  }
+
+  void fetchcurrenbalance() {
+    FirebaseFirestore.instance
+        .collection("withdraw")
+        .snapshots()
+        .listen((snapshot) {
+      // Process the data, call resetmainBalance, and AddMainBalanceTotal here
+      mainBalaceController.resetcurrentBalance();
+      snapshot.docs.forEach((doc) {
+        mainBalaceController.AddcurrentBalanceTotal(
+            double.parse(doc["amount"]));
+      });
+      mainBalaceController.updateDifference();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Aesthetics by Meherun"),
+          title: const Text("Aesthetics by Meherun"),
           elevation: 4,
           backgroundColor: const Color.fromARGB(255, 230, 230, 250),
           actions: [
@@ -95,12 +136,15 @@ class _DashboardState extends State<Dashboard> {
                                     spreadRadius: 1.0,
                                   )
                                 ]),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("1200" + " " + "BDT",
-                                    style: TextStyle(fontSize: 22)),
-                                Text("Main Balance",
+                                Obx(
+                                  () => Text(
+                                      "${mainBalaceController.MainBalanceAmount} BDT",
+                                      style: const TextStyle(fontSize: 22)),
+                                ),
+                                const Text("Main Balance",
                                     style: TextStyle(fontSize: 10))
                               ],
                             ),
@@ -126,11 +170,15 @@ class _DashboardState extends State<Dashboard> {
                                     spreadRadius: 1.0,
                                   )
                                 ]),
-                            child: const Column(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("10", style: TextStyle(fontSize: 22)),
-                                Text("Completed",
+                                Obx(
+                                  () => Text(
+                                      "${mainBalaceController.balanceDifference} BDT",
+                                      style: const TextStyle(fontSize: 22)),
+                                ),
+                                const Text("Current Balance",
                                     style: TextStyle(fontSize: 10))
                               ],
                             ),

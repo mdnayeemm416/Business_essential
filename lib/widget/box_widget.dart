@@ -15,8 +15,8 @@ class Box_widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
-      width: Get.width * .4,
+      padding: const EdgeInsets.all(20),
+      width: 150,
       decoration: BoxDecoration(
           color: const Color.fromARGB(255, 230, 230, 250),
           borderRadius: BorderRadius.circular(15),
